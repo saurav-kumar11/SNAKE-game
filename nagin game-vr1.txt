@@ -1,0 +1,87 @@
+import pygame
+import random
+x = pygame.init()
+
+#creating new window of the game Like display size and name tag of the game
+screen_width = 600
+screen_height =500
+gameWindow = pygame.display.set_mode(( screen_width, screen_height))
+pygame.display.set_caption("My 1st Game on python")
+
+# putting color to the game
+
+# snake color 
+neoGreen = (102,255,102)
+# background color
+black = (0,0,0)
+# food color
+red = (255,0,0)
+
+# snake size can be increase for here
+snake_size = 20
+# food size can increase for here
+food_size = 10
+# location of the snake
+x1 = 300
+y1 = 300
+# velocity of the snake
+x1_change = 0
+y1_change = 0
+# food place of snake
+food_x = random.randint( 0,screen_width)
+food_y = random.randint( 0,screen_height)
+score = 0
+
+'''game specific variable like 
+to exit the game or quit the game'''
+
+game_over = False
+exit_game = False
+# real time for the game
+clock = pygame.time.Clock()
+font =pygame.font.SysFont( None, 55)
+def text_screen(text  , color  , x  , y):
+    screen_text = font.render(text, True , color)
+    gameWindow.blit(screen_text, (x,y))
+
+# creating a game loop
+
+
+while not exit_game:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit_game = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                x1_change = -10
+                y1_change =  0
+            elif event.key == pygame.K_RIGHT:
+                x1_change = 10
+                y1_change = 0
+            elif event.key == pygame.K_UP:
+                y1_change = -10
+                x1_change =  0
+            elif event.key == pygame.K_DOWN:
+                y1_change = 10
+                x1_change = 0     
+    # velocity of the snake++++    
+    x1 += x1_change
+    y1 += y1_change
+
+    if abs(x1 - food_x)<9 and abs(y1 - food_y)<9:
+        score +=1
+        print("Score: ", score * 10)
+        
+        food_x = random.randint( 0,screen_width)
+        food_y = random.randint( 0,screen_height)
+
+    gameWindow.fill(black)
+    text_screen("Score:"+ str(score * 10), red, 5, 5)
+    pygame.draw.rect(gameWindow,red,[food_x,food_y,food_size,food_size])      
+    pygame.draw.rect(gameWindow,neoGreen,[x1,y1,snake_size,snake_size])
+    pygame.display.update()
+
+    clock.tick(30)
+
+pygame.quit()
+quit()
